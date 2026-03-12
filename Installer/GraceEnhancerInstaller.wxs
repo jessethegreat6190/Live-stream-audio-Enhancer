@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="GraceEnhancer" Language="1033" Version="1.0.0.0" Manufacturer="GraceOnline" UpgradeCode="F5E7D4C3-B2A1-4E6F-8C9D-0A1B2C3D4E5F">
+    <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine" />
+
+    <Media Id="1" Cabinet="GraceEnhancer.cab" EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="CommonFilesFolder">
+          <Directory Id="VST3Folder" Name="VST3">
+            <Component Id="GraceEnhancerPlugin" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+              <File Id="GraceEnhancerVST3" Source="$(var.BuildOutputDir)\GraceEnhancer.vst3" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="GraceEnhancerFeature" Title="GraceEnhancer Plugin" Level="1">
+      <ComponentRef Id="GraceEnhancerPlugin" />
+    </Feature>
+  </Product>
+</Wix>

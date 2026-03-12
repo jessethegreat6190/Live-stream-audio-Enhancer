@@ -4,6 +4,8 @@ project(GraceEnhancer VERSION 0.0.1)
 set(JUCE_DIR "C:/JUCE")
 add_subdirectory(${JUCE_DIR} JUCE)
 
+set(JucePlugin_Build_VST 0)
+
 juce_add_plugin(GraceEnhancer
     COMPANY_NAME "GraceOnline"
     IS_SYNTH FALSE
@@ -23,7 +25,13 @@ target_sources(GraceEnhancer PRIVATE
     Source/PluginEditor.cpp
 )
 
+target_link_libraries(GraceEnhancer PRIVATE
+    juce::juce_dsp
+)
+
 target_compile_definitions(GraceEnhancer PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_IGNORE_VST3_MISMATCHED_PARAMETER_WARNING=1
+    JUCE_VST3_CAN_REPLACE_VST2=0
 )

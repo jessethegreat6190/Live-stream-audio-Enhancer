@@ -1,0 +1,8 @@
+Build/
+.vscode/
+*.user
+*.suo
+*.obj
+*.lib
+*.dll
+*.vst3

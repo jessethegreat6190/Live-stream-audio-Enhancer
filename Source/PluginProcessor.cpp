@@ -1,6 +1,11 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new GraceEnhancerAudioProcessor();
+}
+
 GraceEnhancerAudioProcessor::GraceEnhancerAudioProcessor()
     : AudioProcessor (BusesProperties()
                       .withInput ("Input", juce::AudioChannelSet::stereo(), true)
@@ -9,12 +14,12 @@ GraceEnhancerAudioProcessor::GraceEnhancerAudioProcessor()
 
 void GraceEnhancerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    juce::dsp::ProcessSpec spec { sampleRate, (uint32) samplesPerBlock, getTotalNumInputChannels() };
+    juce::dsp::ProcessSpec spec { sampleRate, static_cast<juce::uint32> (samplesPerBlock), getTotalNumInputChannels() };
     eq.prepare(spec);
     compressor.prepare(spec);
     limiter.prepare(spec);
     gain.prepare(spec);
-    stereoBalance.prepare(spec);
+    panner.prepare(spec);
 }
 
 void GraceEnhancerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
@@ -25,7 +30,7 @@ void GraceEnhancerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
     eq.process(juce::dsp::ProcessContextReplacing<float>(block));
     compressor.process(juce::dsp::ProcessContextReplacing<float>(block));
     limiter.process(juce::dsp::ProcessContextReplacing<float>(block));
-    stereoBalance.process(juce::dsp::ProcessContextReplacing<float>(block));
+    panner.process(juce::dsp::ProcessContextReplacing<float>(block));
 
     checkForClipping(buffer);
 }

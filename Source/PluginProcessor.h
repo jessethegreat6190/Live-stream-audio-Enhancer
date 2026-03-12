@@ -1,5 +1,6 @@
 #pragma once
-#include <JuceHeader.h>
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_dsp/juce_dsp.h>
 
 class GraceEnhancerAudioProcessor : public juce::AudioProcessor
 {
@@ -33,7 +34,7 @@ private:
     juce::dsp::Compressor<float> compressor;
     juce::dsp::Limiter<float> limiter;
     juce::dsp::Gain<float> gain;
-    juce::dsp::BalanceStereo<float> stereoBalance;
+    juce::dsp::Panner<float> panner;
 
     void checkForClipping(const juce::AudioBuffer<float>& buffer);
 
